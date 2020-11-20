@@ -1,32 +1,47 @@
 <template>
-  <div id="app">
-    <div id="nav">
+  <div class="flex flex-col h-full">
+    <!-- <div>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    </div> -->
+
+    <Header v-if="locale" :locale="locale" />
+
+    <Content />
+
+    <Footer />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Header from "@/components/Header";
+import Content from "@/components/Content";
+import Footer from "@/components/Footer";
+import { locales } from "./constants/locales.const";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  name: "App",
+  data: () => ({
+    locale: null,
+  }),
+  components: {
+    Header,
+    Content,
+    Footer,
+  },
+  async created() {
+    this.locale = await this.$store.dispatch("getLocaleFromLocalStorage");
+    if (this.locale === null) {
+      this.locale = locales[0].locale;
+      this.$store.dispatch("setLocaleToLocalStorage", this.locale);
     }
-  }
+  },
+};
+</script>
+
+<style lang="scss">
+html,
+body {
+  height: 100%;
 }
 </style>

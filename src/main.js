@@ -4,9 +4,13 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
-import "@/assets/css/tailwind.css";
+import localizeFilter from "@/filters/localize.filters";
+
+import "@/assets/css/tailwind.generated.css";
 
 Vue.config.productionTip = false;
+
+Vue.filter("localize", localizeFilter);
 
 new Vue({
   router,
